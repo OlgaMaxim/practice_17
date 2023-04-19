@@ -2,103 +2,103 @@ error = 'ПЕРЕЗАПУСТИТЕ ПРОГРАММУ'
 sequence_numbers = input('Введите целые числа через пробел: ')
 user_number = int(input('Введите любое число: '))
 
-# Функция для вычисления цифры в строке
+# Функция для определения цифр в строке
 
-определение is_int (ул):
-    ул = ул.заменить(' ', '')
-    пытаться:
-        интервал (стр)
-        вернуть Истина
-    кроме ValueError:
-        вернуть ложь
+def is_int(str):
+    str = str.replace(' ', '')
+    try:
+        int(str)
+        return True
+    except ValueError:
+        return False
 
-# Проверка соответствия условиям
+# Проверка соответствия данных условиям
 
-если " " не в sequence_numbers:
-    print("\nВВОДИТЕ ОТСУТСТВУЮТ ПРОБЕЛЫ, ВВЕДИТЕ ЦЕЛЫЕ ЧИСЛА ЧЕРЕЗ ПРОБЕЛ: ")
+if " " not in sequence_numbers:
+    print("\nВ ВВОДЕ ОТСУТСТВУЮТ ПРОБЕЛЫ, ВВЕДИТЕ ЦЕЛЫЕ ЧИСЛА ЧЕРЕЗ ПРОБЕЛ: ")
     sequence_numbers = input('Введите целые числа через пробел: ')
-если не is_int (порядковые_номера):
+if not is_int(sequence_numbers):
     print('\nНЕ ПРАВИЛЬНО ВВЕДИНЫ ДАННЫЕ! ПЕРЕЗАПУСТИТЕ ПРОГРАММУ И ВВЕДИТЕ ЦЕЛЫЕ ЧИСЛА ЧЕРЕЗ ПРОБЕЛ: \n')
-    распечатать (ошибка)
-еще:
+    print(error)
+else:
     sequence_numbers = sequence_numbers.split()
 
 # Меняем список строк на список чисел
 
-list_sequence_numbers = [int(item) для элемента в sequence_numbers]
+list_sequence_numbers = [int(item) for item in sequence_numbers]
 
 # Сортировка списка
 
-защита слияния_сортировки (L):
-    если len(L) < 2:
-        вернуть L[:]
-    еще:
-        средний = len(L) // 2
-        слева = сортировка_слияния (L [: середина])
-        справа = merge_sort (L [средний:])
-        вернуть слияние (слева, справа)
+def merge_sort(L):
+    if len(L) < 2:
+        return L[:]
+    else:
+        middle = len(L) // 2
+        left = merge_sort(L[:middle])
+        right = merge_sort(L[middle:])
+        return merge(left, right)
 
-деф слияние (слева, справа):
-    результат = []
-    я, j = 0, 0
+def merge(left, right):
+    result = []
+    i, j = 0, 0
 
-    в то время как я < len (слева) и j < len (справа):
-        если слева[i] < справа[j]:
-            результат.append(слева[i])
-            я += 1
-        еще:
-            результат.добавлять(справа[j])
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
             j += 1
 
-    пока я < len (слева):
-        результат.append(слева[i])
-        я += 1
+    while i < len(left):
+        result.append(left[i])
+        i += 1
 
-    в то время как j < len (справа):
-        результат.добавлять(справа[j])
+    while j < len(right):
+        result.append(right[j])
         j += 1
-    вернуть результат
+    return result
 
-list_sequence_numbers = merge_sort (list_sequence_numbers)
+list_sequence_numbers = merge_sort(list_sequence_numbers)
 
 # Установка позиции элемента
 
-def binary_search (массив, элемент, слева, справа):
-    пытаться:
-        если слева > справа:
-            вернуть ложь
-        средний = (правый + левый) // 2
-        если массив [средний] == элемент:
-            вернуться в середине
-        элемент elif < массив [середина]:
-            return binary_search (массив, элемент, левый, средний - 1)
-        еще:
-            return binary_search (массив, элемент, средний + 1, правый)
-    кроме IndexError:
-        return 'Число выходит за диапазон, введите меньшее число.'
+def binary_search(array, element, left, right):
+    try:
+        if left > right:
+            return False
+        middle = (right + left) // 2
+        if array[middle] == element:
+            return middle
+        elif element < array[middle]:
+            return binary_search(array, element, left, middle - 1)
+        else:
+            return binary_search(array, element, middle + 1, right)
+    except IndexError:
+        return 'Число выходит за диапазон списка, введите меньшее число.'
 
-# Устанавливается номер позиции начального элемента
+# Устанавливается номер позиции введенного элемента
 
-print(f'Упорядоченный по возрасту список: {list_sequence_numbers}')
+print(f'Упорядоченный по возрастанию список: {list_sequence_numbers}')
 
-если не binary_search(list_sequence_numbers, user_number, 0, len(list_sequence_numbers)):
+if not binary_search(list_sequence_numbers, user_number, 0, len(list_sequence_numbers)):
     rI = min(list_sequence_numbers, key=lambda x: (abs(x - user_number), x))
     ind = list_sequence_numbers.index(rI)
-    макс_инд = инд + 1
-    мин_инд = инд - 1
-    если rI < user_number:
-        print(f'''В списке нет введенного элемента
+    max_ind = ind + 1
+    min_ind = ind - 1
+    if rI < user_number:
+        print(f'''В списке нет введенного элемента 
 Ближайший меньший элемент: {rI}, его индекс: {ind}
 Ближайший больший элемент: {list_sequence_numbers[max_ind]} его индекс: {max_ind}''')
-    Элиф min_ind < 0:
+    elif min_ind < 0:
         print(f'''В списке нет введенного элемента
 Ближайший больший элемент: {rI}, его индекс: {list_sequence_numbers.index(rI)}
 В списке нет меньшего элемента''')
-    Элиф РИ > номер_пользователя:
+    elif rI > user_number:
         print(f'''В списке нет введенного элемента
 Ближайший больший элемент: {rI}, его индекс: {list_sequence_numbers.index(rI)}
 Ближайший меньший элемент: {list_sequence_numbers[min_ind]} его индекс: {min_ind}''')
     elif list_sequence_numbers.index(rI) == 0:
         print(f'Индекс введенного элемента: {list_sequence_numbers.index(rI)}')
-еще:
+else:
     print(f'Индекс введенного элемента: {binary_search(list_sequence_numbers, user_number, 0, len(list_sequence_numbers))}')
